@@ -1,47 +1,28 @@
-import { authService } from "fbase";
-import { 
-        GoogleAuthProvider,
-        GithubAuthProvider,
-        signInWithPopup
-        } from "@firebase/auth";
-import React, {useState} from "react";
-import "style/auth.css";
+import React from "react";
 import AuthForm from "components/AuthForm";
+import styled from "styled-components";
+
+const Footer = styled.div`
+    font-family: 'ChosunGs';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunGs.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    color: white;
+    position: fixed;
+    padding: 10px 10px 0px 10px;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 17px;
+`;
 
 const Auth = () => {
-
-
-    const onSocialClick = async (event) => {
-        const {target: {name}} = event;
-        
-        const providerGoogle = new GoogleAuthProvider();
-        const providerGithub = new GithubAuthProvider();
-
-        if (name === "google") {
-            signInWithPopup(authService, providerGoogle); 
-        } else if (name === "github") {
-            signInWithPopup(authService, providerGithub); 
-        };
-        // const data = await authService.signInWithPopup(provider);
-    };
-
     return (
-    <div className="signInSection">
+    <div>
         <AuthForm />
-        <div className="altLogin">
-            <button
-                id="googleButton" 
-                onClick={onSocialClick} 
-                name="google"> 
-            Continue with Google 
-            </button>
-            <button 
-                id="githubButton"
-                onClick={onSocialClick} 
-                name="github"> 
-            Continue with GitHub 
-            </button>
-        </div>
+        <Footer>
+            <footer> &copy; 유한회사 노마드컴퍼니 <br /> 2021년 3분기 天下第一 트위터 모방 경연대회  </footer>
+        </Footer>
     </div>
     )
 };

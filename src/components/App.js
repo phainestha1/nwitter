@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import AppRouter from "components/Router";
-import {authService} from "fbase";
-import "style/app.css";
+import { authService } from "fbase";
+
 
 function App() {
   const [init, setInit] = useState(false);
@@ -20,15 +20,14 @@ function App() {
     setUserObj({...authService.currentUser});
   };
     return (
-    <div className="appPage">
-    {init ? <AppRouter
-              refreshUser={refreshUser} 
-              isLoggedIn={Boolean(userObj)} 
-              userObj={userObj} 
-              /> 
-          : "Iitializing..."
-            }
-    <footer> &copy; 유한회사 노마드컴퍼니 <br /> {new Date().getFullYear()}년 천하제일 트위터 모방 경연대회  </footer>
+    <div>
+      {init ? <AppRouter
+                refreshUser={refreshUser} 
+                isLoggedIn={Boolean(userObj)} 
+                userObj={userObj} 
+                /> 
+            : "Iitializing..."
+              }
     </div>
     );
   }

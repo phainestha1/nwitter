@@ -2,12 +2,17 @@ import React, {useState} from "react";
 import { dbService, storageService } from "fbase";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+import styled from "styled-components";
 
-const Nweet = ({ nweetObj, isOwner }) => {
+const Container = styled.div`
+    text-align: center;
+`;
+
+const Nweet = ({ nweetObj, isOwner, userObj }) => {
     const [editing, setEditing] = useState(false);
     const [newNweet, setNewNweet] = useState(nweetObj.text);
     
-    const onDeleteClink = async() => {
+    const onDeleteClick = async() => {
         const ok = window.confirm("Are you sure that you want to delete this nweet?");
         if(ok) {
             await deleteDoc(doc(dbService, `nweets/${nweetObj.id}`));
@@ -27,8 +32,9 @@ const Nweet = ({ nweetObj, isOwner }) => {
         const { target : {value} } = event;
         setNewNweet(value);
     }
+
     return (  
-        <div>
+        <Container>
             {
                 editing 
                 ? 
@@ -41,8 +47,8 @@ const Nweet = ({ nweetObj, isOwner }) => {
                                 type="text" 
                                 placeholder="Edit Your Nweet" 
                                 value={newNweet} 
+                                onChange= {onChange}
                                 required 
-                                onChange = {onChange}
                             />
                             <input 
                             type="submit" 
@@ -58,6 +64,11 @@ const Nweet = ({ nweetObj, isOwner }) => {
                     )
                 :
                     (<>
+                    <img src={userObj.photoURL} 
+                         alt="profileImage" 
+                         width="70px"
+                         height="70px"
+                         />
                     <h4>
                         {nweetObj.text}
                     </h4>
@@ -69,7 +80,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
                     }
                     {isOwner && (   
                         <>
-                            <button onClick={onDeleteClink}>
+                            <button onClick={onDeleteClick}>
                                 Delete Nweet
                             </button>
                             <button onClick={toggleEditing}>
@@ -79,7 +90,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
                     )}
                     </>)
             }
-        </div>
+        </Container>
     );
 }
 
