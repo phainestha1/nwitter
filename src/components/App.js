@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AppRouter from "components/Router";
 import { authService } from "fbase";
+import styled from "styled-components";
 
 
 function App() {
@@ -26,10 +27,20 @@ function App() {
                 isLoggedIn={Boolean(userObj)} 
                 userObj={userObj} 
                 /> 
-            : "Iitializing..."
+            : <LoadingContainer>
+              <img src="https://i.stack.imgur.com/MEBIB.gif"
+                   alt="Loading..."
+                   />
+              </LoadingContainer>
               }
     </div>
     );
   }
 
 export default App;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;

@@ -5,75 +5,23 @@ import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import { FaCamera } from "react-icons/fa";
+import { MdSend } from "react-icons/md";
+import { CgClose } from "react-icons/cg";
+import { HiOutlineEmojiHappy } from "react-icons/hi";
+import Picker from 'emoji-picker-react';
 
-const Container = styled.div`
-    /* position: absolute; */
-    width: 80%;
-    left: 10%;
-    height: 10%;
-    bottom: 0;
 
-    /* Profile Image */
-    .profile {
-        position: absolute;
-        border: none;
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        left: 350px;
-        bottom: 24px;
-    }
-
-    /* Nweet Input Box */
-    .nweetInputBox {
-        position: fixed;
-        width: 50%;
-        height: 10%;
-        left: 25%;
-        border: 1px solid black;
-        bottom: 10px;
-        margin-left: 10px;
-    }
-    .nweetInputBox:focus {
-        /* outline: none; */
-    }
-
-    /* Image Attachment */
-    .attachImage input {
-        position: fixed;
-        clip:rect(0,0,0,0);
-    }
-    .attachImage label {
-        position: fixed;
-        bottom: 12%;
-        left: 25%;
-        margin-left: 10px;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-    .attachImage label:hover {
-        color: gray;
-    }
-
-    /* Nweet Submit */
-    .nweetSubmit {
-        position: fixed;
-        bottom: 40px;
-        left: 80%;
-        height: 60px;
-        border: none;
-        background-color: skyblue;
-    }
-    .nweetSubmit:hover {
-        background-color: cadetblue;
-        color: honeydew;
-    }
-
-`;
 
 const NweetFactory = ({ userObj }) => {
     const [nweet, setNweet] = useState("");
     const [attachment, setAttachment] = useState("");
+    const [newModal, setNewModal] = useState(false);
+    
+    const today = new Date();
+    const getMonth = today.getMonth();
+    const getDate = today.getDate();
+    const createdDate = `${getMonth + 1}월 ${getDate}일`;
+    
     const onSubmit = async (event) => {
         event.preventDefault();
         let attachmentUrl = "";
@@ -84,8 +32,11 @@ const NweetFactory = ({ userObj }) => {
         }
         const nweetObj = {
             text: nweet,
-            createdAt: Date.now(),
+            orderingBy: Date.now(),
+            createdAt: createdDate,
             creatorId: userObj.uid,
+            nickName: userObj.displayName,
+            profileImage: userObj.photoURL,
             attachmentUrl
         }
 
@@ -93,7 +44,7 @@ const NweetFactory = ({ userObj }) => {
         setNweet("");
         setAttachment("");
     };
-    const onChange = (event) => {
+    const onChange = (event, emojiObject) => {
         const { target : {value} } = event;
         setNweet(value);
     };
@@ -110,57 +61,197 @@ const NweetFactory = ({ userObj }) => {
     const onClearAttachment = () => {
         setAttachment("");
     }
+    const modalToggle = () => {
+        setNewModal((prev) => !prev);
+    };
+
+    const onEmojiClick = (event, emojiObject) => {
+        setNweet((prev) => prev + emojiObject.emoji);
+    };
 
     return (
-        <Container>
-        <img className="profile" src={userObj.photoURL} alt="profileImage" />
-        <form onSubmit = {onSubmit}>
-            <div >
-            <input
-                className="nweetInputBox"
-                value={nweet}
-                onChange={onChange} 
-                type="text" 
-                placeholder="What's on your mind?" 
-                maxLength={100}
-                required
-            />
-
-            <input
-                className="nweetSubmit"
-                type="submit" 
-                value="Nweet" />
-            </div>
-
-            <div className="attachImage">
-                <label for="image">
-                    <FaCamera size={25} />
-                </label>
-                <input
-                    id="image" 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={onFileChange} 
-                    />
-            </div>
-
-
-            {attachment && ( 
-                <div>
-                    <img 
-                        src={attachment} 
-                        alt="attachedImage" 
-                        width="50px" 
-                        height="50px" />
-                    <button 
-                        onClick={onClearAttachment}>
-                        Clear
-                    </button>
+        <>        
+        <IconContainer>
+            <ImageContainer>
+                <div className="attachImage">
+                    <label for="image"> <FaCamera size={20} /> </label>
+                    <input
+                        id="image" 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={onFileChange}
+                        />
                 </div>
-                )}
+            </ImageContainer>
+            <AttachedImage className={`${attachment ? "" : "hidden"}`}>
+               {attachment && ( 
+                   <>
+                       <button onClick={onClearAttachment}>
+                           <CgClose size={20}/>
+                       </button>
+                       <img
+                           src={attachment} 
+                           alt="attachedImage" 
+                           width="60px" 
+                           height="60px" />
+                   </>
+               )}
+            </AttachedImage>
+
+            <ModalContainer>
+                <button 
+                    className="EmojiButton"
+                    onClick={modalToggle} 
+                    >
+                    <HiOutlineEmojiHappy size={20} />
+                </button>
+                <div className={`modal ${newModal ? "" : "hidden"}`}>
+                        <Picker onEmojiClick={onEmojiClick} />
+                </div>
+            </ModalContainer>
+        </IconContainer>
+
+        <form onSubmit = {onSubmit}>
+        <Factory>
+            <NweetInput>
+                <input
+                    value= {nweet}
+                    onChange={onChange} 
+                    type="text" 
+                    placeholder="Nweet Everyone!" 
+                    maxLength={60}
+                    >   
+                </input>
+            </NweetInput>
+            <SubmitButton>
+                <button
+                    type="submit" 
+                    value="nweet"><MdSend size={25}/>
+                </button>
+            </SubmitButton>
+        </Factory>
         </form>
-        </Container>
+
+    </>
     )
 }
 
 export default NweetFactory;
+
+const AttachedImage = styled.div`
+        position: fixed;
+        flex-direction: column;
+        width: 278px;
+        height: 318px;
+        left: 550px;
+        bottom: 10vh;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 
+                    0 6px 6px rgba(0, 0, 0, 0.23);
+
+    >img {
+        margin: auto;
+    }
+    >button {
+        display: flex;
+        justify-content: right;
+        padding-top: 2px;
+        padding-left: 2px;
+        margin-left: 5px;
+        margin-right: 5px;
+        color: gray;
+        background-color: white;
+        border: none;
+        border-bottom: 1px solid #49274b;
+        cursor: pointer;
+        transition: 0.2s;
+        :hover {
+            color: red;
+        }
+    }
+
+
+`;
+const Factory = styled.div`
+    display: flex;
+    border: none;
+    flex-direction: row;
+    justify-content: center;
+
+    color: #3f3f3f;
+`;
+const NweetInput = styled.div`
+    display: flex;
+    width: 50vw;
+    padding: 15px;
+    border: 1px solid gray;
+    border-radius: 3px;
+    
+    >input{
+        border: none;
+        width: 100%;
+        height: 100%;
+    }
+    >input:focus {outline: none;}
+
+`;
+const SubmitButton = styled.div`
+    display: flex;
+
+    >button {
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    >button:hover {
+        opacity: 0.5;
+    }
+`;
+const IconContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .hidden {
+        display:none;
+    }
+`;
+const ImageContainer = styled.div`
+
+    .attachImage input {
+        display: none;
+        }
+    .attachImage label {
+        cursor: pointer;
+        transition: 0.2s;
+        :hover { color: gray; }
+    }
+`;
+const ModalContainer = styled.div`
+    display: flex;
+
+    .EmojiButton {
+        cursor: pointer;
+        transition: 0.2s;
+        background-color: transparent;
+        border: none;
+
+        :hover{ color: gray; }
+    }
+    
+    .modal{
+        position: fixed;
+        left: 260px;
+        bottom: 10vh;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 
+                    0 6px 6px rgba(0, 0, 0, 0.23);
+    }
+
+
+    .hidden {
+        display: none;
+    }
+`;

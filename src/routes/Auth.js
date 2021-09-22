@@ -2,6 +2,19 @@ import React from "react";
 import AuthForm from "components/AuthForm";
 import styled from "styled-components";
 
+const Auth = () => {
+    return (
+    <div>
+        <AuthForm />
+        <Footer>
+            <footer> &copy; 유한회사 노마드컴퍼니 <br /> 2021년 3분기 天下第一 트위터 모방 경연대회  </footer>
+        </Footer>
+    </div>
+    )
+};
+
+export default Auth;
+
 const Footer = styled.div`
     font-family: 'ChosunGs';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunGs.woff') format('woff');
@@ -15,16 +28,3 @@ const Footer = styled.div`
     text-align: center;
     font-size: 17px;
 `;
-
-const Auth = () => {
-    return (
-    <div>
-        <AuthForm />
-        <Footer>
-            <footer> &copy; 유한회사 노마드컴퍼니 <br /> 2021년 3분기 天下第一 트위터 모방 경연대회  </footer>
-        </Footer>
-    </div>
-    )
-};
-
-export default Auth;

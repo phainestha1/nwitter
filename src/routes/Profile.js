@@ -7,9 +7,6 @@ import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 
-const Container = styled.div`
-    text-align: center;
-`;
 
 const Profile = ({ refreshUser, userObj }) => {
     const history = useHistory();
@@ -44,8 +41,7 @@ const Profile = ({ refreshUser, userObj }) => {
             const {currentTarget: {result}} = finishedEvent;
             setNewProfile(result);    
         }
-        reader.readAsDataURL(theFile);
-        
+        reader.readAsDataURL(theFile);       
     }
 
     const onProfileSubmit = async (event) => {
@@ -62,20 +58,26 @@ const Profile = ({ refreshUser, userObj }) => {
                     photoURL: attachmentUrl
                 }
             );
-            refreshUser();
-            
+            refreshUser();           
         }
-
     }
 
     return (
     <Container>
         <h1> Hello {userObj.displayName} </h1>
-        <img src={userObj.photoURL} 
-             alt="profilePicture" 
-             width="70px"
-             height="70px"
-             />
+        {newProfile === null 
+                        ? 
+                        <img 
+                            src="https://nomadcoders.co/m.svg" 
+                            width="70px"
+                            height="70px"
+                            alt="altImage"/>
+                        :
+                        <img 
+                            src={newProfile} 
+                            width="70px"
+                            height="70px"
+                            alt="profileImage"/>}
         <form onSubmit={onSubmit}>
             <input 
                 onChange={onChange}
@@ -87,18 +89,27 @@ const Profile = ({ refreshUser, userObj }) => {
         </form>
         
         <form onSubmit={onProfileSubmit}>
-            <input onChange={onProfileChange} type="file" accept="image/*" />
+            <input 
+                onChange={onProfileChange} 
+                type="file" 
+                accept="image/*" />
             <input type="submit" value="Update Profile" />
-            {newProfile ==="" ? 
-                                <img src="https://nomadcoders.co/m.svg" alt="altImage"/>
-                              :
-                                <img src={newProfile} 
-                                     width="50px"
-                                     height="50px"
-                                     alt="profileImage"/> 
-                                     }
+            {newProfile === null 
+                        ? 
+                        <img 
+                            src="https://nomadcoders.co/m.svg" 
+                            width="50px"
+                            height="50px"
+                            alt="altImage"/>
+                        :
+                        <img 
+                            src={newProfile} 
+                            width="50px"
+                            height="50px"
+                            alt="profileImage"/> 
+            }
         </form>
-        
+
         <button onClick={onLogOutClick}> Sign Out </button>
     </Container>
     )
@@ -107,3 +118,14 @@ const Profile = ({ refreshUser, userObj }) => {
 
 
 export default Profile;
+
+const Container = styled.div`
+    margin-left: auto;
+    margin-right: auto;
+    text-align:center;
+    height: 95%;
+
+    >img {
+        border-radius: 999px;
+    }
+`;

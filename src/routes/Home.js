@@ -8,15 +8,57 @@ import Nweet from "components/Nweet";
 import NweetFactory from "components/NweetFactory";
 import styled from "styled-components";
 
-const Container = styled.div`
-    text-align: center;
+const Home = ({ userObj }) => {
+    const [nweets, setNweets] = useState([]);
+    useEffect(() => {
+        const queryData = query(collection(dbService, "nweets"), orderBy("orderingBy", "asc"));
+        onSnapshot(queryData, snapshot => {
+            const nweetArr = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            setNweets(nweetArr);
+        });
+        },[])
+    
+    return (
+    <HomeContainer>
+        <NweetContainer>
+            <div className="nweetBox">
+                {nweets.map(nweet => (
+                    <Nweet 
+                        key={nweet.id} 
+                        nweetObj={nweet} 
+                        isOwner={nweet.creatorId === userObj.uid}
+                        userObj={userObj}/>
+                ))}
+            </div>
+        </NweetContainer>
 
+        <ChatContainer>
+            <NweetFactory userObj={userObj} />
+        </ChatContainer>
+    </HomeContainer>    
+    );
+};
 
+export default Home;
+
+const HomeContainer = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+`;
+
+const NweetContainer = styled.div`
+    display: flex;
+    height: 85vh;
+    /* display: none;   */
+    
     .nweetBox {
         position: flex;
-        
         width: 100%;
-        height: 750px;
         overflow: scroll;
         overflow-x: hidden;
         }
@@ -32,39 +74,13 @@ const Container = styled.div`
     .nweetBox::-webkit-scrollbar-thumb:hover {
         background: #555; 
         }
-
 `;
 
+const ChatContainer = styled.div`
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(transparent, white);
 
-const Home = ({ userObj }) => {
-    const [nweets, setNweets] = useState([]);
-    useEffect(() => {
-        const queryData = query(collection(dbService, "nweets"), orderBy("createdAt", "asc"));
-        onSnapshot(queryData, snapshot => {
-            const nweetArr = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            setNweets(nweetArr);
-        });
-        },[])
-    
-    return (
-    <>
-    <Container>
-        <div className="nweetBox">
-            {nweets.map(nweet => (
-                <Nweet 
-                    key={nweet.id} 
-                    nweetObj={nweet} 
-                    isOwner={nweet.creatorId === userObj.uid}
-                    userObj={userObj}/>
-            ))}
-        </div>
-    </Container>
-        <NweetFactory userObj={userObj} />
-    </>    
-    );
-};
-
-export default Home;
+`;
