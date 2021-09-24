@@ -1,15 +1,17 @@
+import React, {useState, useEffect, useRef} from "react";
 import { dbService } from "fbase";
 import { collection, 
          query,
          orderBy, 
          onSnapshot } from "firebase/firestore";
-import React, {useState, useEffect} from "react";
 import Nweet from "components/Nweet";
 import NweetFactory from "components/NweetFactory";
 import styled from "styled-components";
 
 const Home = ({ userObj }) => {
     const [nweets, setNweets] = useState([]);
+    const chatRef = useRef(null);
+    
     useEffect(() => {
         const queryData = query(collection(dbService, "nweets"), orderBy("orderingBy", "asc"));
         onSnapshot(queryData, snapshot => {
@@ -19,8 +21,14 @@ const Home = ({ userObj }) => {
             }));
             setNweets(nweetArr);
         });
-        },[])
-    
+
+    },[])
+
+    useEffect(() => {
+        console.log(chatRef.current);
+        chatRef?.current?.scrollIntoView({ behavior: "smooth" });
+    }, [nweets]);
+        
     return (
     <HomeContainer>
         <NweetContainer>
@@ -32,6 +40,7 @@ const Home = ({ userObj }) => {
                         isOwner={nweet.creatorId === userObj.uid}
                         userObj={userObj}/>
                 ))}
+            <ChatBottom ref={chatRef} />
             </div>
         </NweetContainer>
 
@@ -54,7 +63,6 @@ const HomeContainer = styled.div`
 const NweetContainer = styled.div`
     display: flex;
     height: 85vh;
-    /* display: none;   */
     
     .nweetBox {
         position: flex;
@@ -81,6 +89,6 @@ const ChatContainer = styled.div`
     flex: 1;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(transparent, white);
 
 `;
+const ChatBottom = styled.div``;

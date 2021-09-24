@@ -20,6 +20,7 @@ function App() {
   const refreshUser = () => {
     setUserObj({...authService.currentUser});
   };
+
     return (
     <div>
       {init ? <AppRouter
