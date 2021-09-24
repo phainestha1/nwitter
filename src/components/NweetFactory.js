@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { dbService, storageService } from "fbase";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
@@ -16,7 +16,8 @@ const NweetFactory = ({ userObj }) => {
     const [nweet, setNweet] = useState("");
     const [attachment, setAttachment] = useState("");
     const [newModal, setNewModal] = useState(false);
-    
+    const fileInput = useRef();
+
     const today = new Date();
     const getMonth = today.getMonth();
     const getDate = today.getDate();
@@ -43,6 +44,7 @@ const NweetFactory = ({ userObj }) => {
         await addDoc(collection(dbService, "nweets"), nweetObj);
         setNweet("");
         setAttachment("");
+        fileInput.current.value = "";
     };
     const onChange = (event, emojiObject) => {
         const { target : {value} } = event;
@@ -60,6 +62,7 @@ const NweetFactory = ({ userObj }) => {
     }
     const onClearAttachment = () => {
         setAttachment("");
+        fileInput.current.value = "";
     }
     const modalToggle = () => {
         setNewModal((prev) => !prev);
@@ -80,15 +83,18 @@ const NweetFactory = ({ userObj }) => {
                         type="file" 
                         accept="image/*" 
                         onChange={onFileChange}
+                        ref={fileInput}
                         />
                 </div>
             </ImageContainer>
             <AttachedImage className={`${attachment ? "" : "hidden"}`}>
                {attachment && ( 
                    <>
+                    <CloseButton>
                        <button onClick={onClearAttachment}>
                            <CgClose size={20}/>
                        </button>
+                    </CloseButton>
                        <img
                            src={attachment} 
                            alt="attachedImage" 
@@ -96,6 +102,7 @@ const NweetFactory = ({ userObj }) => {
                            height="60px" />
                    </>
                )}
+               <h3>Here's Your Image!</h3>
             </AttachedImage>
 
             <ModalContainer>
@@ -151,28 +158,41 @@ const AttachedImage = styled.div`
                     0 6px 6px rgba(0, 0, 0, 0.23);
 
     >img {
+        display: flex;
         margin: auto;
+        margin-top: 30px;
+        width: 200px;
+        height: 200px;
+        border-radius: 999px;
     }
-    >button {
+    >h3{
+        text-align: center;
+        padding-top: 20px;
+        font-size: 15px;
+        }
+`;
+const CloseButton = styled.div`
+
         display: flex;
         justify-content: right;
         padding-top: 2px;
         padding-left: 2px;
         margin-left: 5px;
         margin-right: 5px;
-        color: gray;
+        border-bottom: 1px solid #49274b;
+        
+    >button {color: gray;
         background-color: white;
         border: none;
-        border-bottom: 1px solid #49274b;
         cursor: pointer;
         transition: 0.2s;
+        
         :hover {
             color: red;
         }
     }
-
-
 `;
+
 const Factory = styled.div`
     display: flex;
     border: none;

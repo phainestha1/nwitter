@@ -25,7 +25,6 @@ const Home = ({ userObj }) => {
     },[])
 
     useEffect(() => {
-        console.log(chatRef.current);
         chatRef?.current?.scrollIntoView({ behavior: "smooth" });
     }, [nweets]);
         

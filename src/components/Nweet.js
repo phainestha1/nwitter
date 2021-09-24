@@ -4,7 +4,8 @@ import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import styled from "styled-components";
 import { AiFillEdit } from "react-icons/ai";
-import { RiDeleteBin7Fill } from "react-icons/ri";
+import { RiDeleteBin7Fill, RiChatNewFill } from "react-icons/ri";
+import { GiCancel } from "react-icons/gi";
 
 
 const Nweet = ({ nweetObj, isOwner }) => {
@@ -40,8 +41,9 @@ const Nweet = ({ nweetObj, isOwner }) => {
                     (
                     <>  
                         {isOwner &&
-                        <>
                         <form onSubmit={onSubmit} >
+                        <NweetEditInput>
+                        <InputLeft>
                             <input 
                                 type="text" 
                                 placeholder="Edit Your Nweet" 
@@ -49,15 +51,17 @@ const Nweet = ({ nweetObj, isOwner }) => {
                                 onChange={onChange}
                                 required 
                             />
-                            <input 
-                            type="submit" 
-                            value="Update Nweet" 
-                            />
-                        </form>
+                        </InputLeft>
+                        <InputRight>
+                        <button type="submit">
+                            <RiChatNewFill size={20} />
+                        </button> 
                         <button onClick={toggleEditing}> 
-                            Cancel 
+                            <GiCancel size={18} />
                         </button>
-                        </>  
+                        </InputRight>
+                        </NweetEditInput>  
+                        </form>
                         }
                     </>
                     )
@@ -71,13 +75,21 @@ const Nweet = ({ nweetObj, isOwner }) => {
                                 id="delete" 
                                 size={18} 
                                 onClick={onDeleteClick} />
-                            <AiFillEdit
+                        <AiFillEdit
                                 id="edit" 
                                 size={18} 
                                 onClick={toggleEditing} />
                         </Buttons>                            
+                        <NweetImageTrue>
+                            {nweetObj.attachmentUrl && 
+                            <img src={nweetObj.attachmentUrl}
+                            alt="nweetImage"
+                            width="50ox" 
+                            height="50px" />}
+                        </NweetImageTrue>
+                        
                         <MiddleSection>
-                        <MyNickname>
+                            <MyNickname>
                             <h4>@{nweetObj.createdAt}</h4>
                             <h5>
                                 {nweetObj.nickName === null 
@@ -88,12 +100,8 @@ const Nweet = ({ nweetObj, isOwner }) => {
                         <NweetContent>
                             <h4>{nweetObj.text}</h4>
                         </NweetContent>
+                        
 
-                        {nweetObj.attachmentUrl && 
-                        <img src={nweetObj.attachmentUrl}
-                        alt="nweetImage"
-                        width="50ox" 
-                        height="50px" />}
                         </MiddleSection>
                                                 
                         <ProfileImage>
@@ -104,6 +112,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
                                  alt="profileImage" 
                             />
                         </ProfileImage>
+                        
                         </NweetUploadTrue> 
                         </>)
                     :
@@ -151,6 +160,39 @@ export default Nweet;
 
 const Container = styled.div`
 `;
+const NweetEditInput =styled.div`
+    display: flex;
+    flex: 1;
+    justify-content: right;
+    margin-right: 100px;
+    margin-bottom: 23px;
+    background-color: transparent;
+`;
+const InputLeft = styled.div`
+    display: flex;
+    >input{
+        padding: 10px;
+        width: 300px;
+    }
+`;
+const InputRight = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding-top: 4px;
+    
+    >button {
+    background-color: white;
+    border: none;
+    transition: 0.2s;
+    cursor: pointer;
+    
+    :hover {
+        color: steelblue;
+        opacity: 0.8;
+    }
+    }
+`;
+
 const MiddleSectionFalse = styled.div`
     display: flex;
     flex-direction: column;
@@ -175,6 +217,7 @@ const YourNickName = styled.div`
     // Name
     >h5 {
         font-size: 17px;
+        color: #01729d;
     }
 `;
 const ProfileImage = styled.div`
@@ -185,6 +228,17 @@ const ProfileImage = styled.div`
         background-color: white;
     }
 `;
+const NweetImageTrue = styled.div`
+    display: flex;
+    margin-right: 15px;
+    >img {
+        width: 80px;
+        height: 80px;
+        border: 4px solid gray;
+        border-radius: 8px;
+    }
+`;
+
 const NweetContentFalse = styled.div`  
     display: flex;
     flex-direction: column;
@@ -232,6 +286,7 @@ const MyNickname = styled.div`
     }
     >h5 {
         font-size: 17px;
+        color: #01729d
     }
 `;
 const NweetUploadTrue = styled.div`
@@ -267,6 +322,7 @@ const NweetUploadFalse = styled.div`
 const Buttons = styled.div`
     display: flex;
     margin-top: 20px;
+    margin-right: 12px;
     cursor: pointer;
 
 

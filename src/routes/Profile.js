@@ -8,7 +8,7 @@ import { FaCamera } from "react-icons/fa";
 import { AiFillEdit } from "react-icons/ai";
 
 
-const Profile = ({ refreshUser, userObj, nweets }) => {
+const Profile = ({ refreshUser, userObj}) => {
     const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
     const [newProfile, setNewProfile] = useState(userObj.photoURL);
     const { metadata : { creationTime, lastSignInTime}} = userObj;
@@ -136,9 +136,10 @@ const Profile = ({ refreshUser, userObj, nweets }) => {
             </EditSection>
         </RightHeader>
     </ProfileContainer>
+
     <NweetInfoContainer>
         <ContainerTop>
-        <h1>My Nweet Container</h1>
+        <h1> {userObj.displayName}'s Nweet Container</h1>
         </ContainerTop>
     </NweetInfoContainer>
     </ProfilePage>

@@ -60,7 +60,7 @@ const AppRouter = ( {refreshUser ,isLoggedIn, userObj} ) => {
                                     {nweets.map(nweet => (
                                         nweet.creatorId === userObj.uid 
                                         && 
-                                    <div>
+                                    <div key={nweet.id}>
                                         <img id="profile" 
                                              src={nweet.profileImage === null
                                                     ? "https://nomadcoders.co/m.svg" 
@@ -76,10 +76,16 @@ const AppRouter = ( {refreshUser ,isLoggedIn, userObj} ) => {
                                             </div>
                                             <h3>{nweet.text}</h3>
                                         </div>
-                                    </div>
-                                    )        
-                                    )}
+                                        {nweet.attachmentUrl && 
+                                        <img 
+                                        src={nweet.attachmentUrl}
+                                        alt="nweetImage"
+                                        width="50ox" 
+                                        height="50px" />}
+                                    </div>        
+                                    ))}
                                 </div>
+                                
                                 </ProfileBottom>
                                 </ProfileSection>
                             </Route>
@@ -218,6 +224,8 @@ const ProfileBottom = styled.div`
         flex-direction: column;
         justify-content: center;
         padding-left: 20px;
+        margin-right: 8px;
         border-left: 1px solid #d0c8cb;
+
     }
 `;
