@@ -4,43 +4,43 @@ import { collection,
          query,
          orderBy,  
          onSnapshot } from "firebase/firestore";
-import Nweet from "components/Nweet";
-import NweetFactory from "components/NweetFactory";
+import NweetSecond from "components/NweetSecond";
+import NweetFactorySecond from "components/NweetFactorySecond";
 import styled from "styled-components";
 
 const Home = ({ userObj }) => {
-    const [nweets, setNweets] = useState([]);
+    const [nweetsSecond, setNweetsSecond] = useState([]);
     const chatRef = useRef(null);
     
     useEffect(() => {
-        const queryData = query(collection(dbService, "nweets"), orderBy("orderingBy", "asc"));
+        const queryData = query(collection(dbService, "nweetsSecond"), orderBy("orderingBy", "asc"));
         onSnapshot(queryData, snapshot => {
             const nweetArr = snapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
             }));
-            setNweets(nweetArr);
+            setNweetsSecond(nweetArr);
         });
 
     },[])
 
     useEffect(() => {
         chatRef?.current?.scrollIntoView({ behavior: "smooth" });
-    }, [nweets]);
+    }, [nweetsSecond]);
         
     return (
     <HomeContainer>
         <ChannelTitle>
-            <h1># 행복한 리액트 방</h1>
-            <h2>Anyrhing Related to React JS, Firebase, Javascript</h2>
+            <h1># Challenge</h1>
+            <h2>Challengers Never Give Up</h2>
         </ChannelTitle>
         <NweetContainer>
             <div className="nweetBox">
-                {nweets.map(nweet => (
-                    <Nweet 
-                        key={nweet.id} 
-                        nweetObj={nweet} 
-                        isOwner={nweet.creatorId === userObj.uid}
+                {nweetsSecond.map(nweetSecond => (
+                    <NweetSecond 
+                        key={nweetSecond.id} 
+                        nweetObjSecond={nweetSecond} 
+                        isOwner={nweetSecond.creatorId === userObj.uid}
                         userObj={userObj}/>
                 ))}
             <ChatBottom ref={chatRef} />
@@ -48,7 +48,7 @@ const Home = ({ userObj }) => {
         </NweetContainer>
 
         <ChatContainer>
-            <NweetFactory userObj={userObj} />
+            <NweetFactorySecond userObj={userObj} />
         </ChatContainer>
     </HomeContainer>    
     );

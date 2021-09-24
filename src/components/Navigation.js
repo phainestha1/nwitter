@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import styled from "styled-components";
-import { VscHome } from "react-icons/vsc";
+// import { VscHome } from "react-icons/vsc";
 import { CgProfile } from "react-icons/cg";
 import { FiLogOut } from "react-icons/fi";
 import { authService } from "fbase";
@@ -36,9 +36,9 @@ const Navigation = ({ userObj }) => {
           <Link className="link profile" to="/profile">
             <CgProfile size={28} /> 
           </Link>
-          <Link className="link home" to="/">
+          {/* <Link className="link home" to="/">
             <VscHome size={29} alt="Home"/> 
-          </Link>
+          </Link> */}
           <button onClick={onLogOutClick}> <FiLogOut size={27}/> </button>
       </HeaderLeft>
 

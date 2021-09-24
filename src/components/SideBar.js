@@ -1,17 +1,31 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import { dbService } from "fbase";
+import { collection, 
+        query,
+        onSnapshot } from "firebase/firestore";
+import SideBarOptions from "components/SideBarOptions";
 import {Link} from "react-router-dom";
 import styled from "styled-components";
-import SideBarOptions from "components/SideBarOptions";
-import {VscReferences} from "react-icons/vsc";
-import {TiWeatherCloudy} from "react-icons/ti";
-import {RiTodoLine} from "react-icons/ri";
-import {FiThumbsUp} from "react-icons/fi";
-import {MdExpandMore} from "react-icons/md";
+import {VscReferences, VscMention, VscBrowser} from "react-icons/vsc";
+import {AiOutlineFolder, AiFillFire} from "react-icons/ai";
+import {BsHouseDoorFill} from "react-icons/bs";
 import {IoMdAdd} from "react-icons/io";
+import {FaHeart} from "react-icons/fa";
 import {BsHash} from "react-icons/bs";
 
-
 function SideBar({ userObj }) {
+    const [channels, setChannels] = useState([]);
+    useEffect(() => {
+        const queryData = query(collection(dbService, "rooms"));
+        onSnapshot(queryData, snapshot => {
+            const channelsArr = snapshot.docs.map(doc => ({
+                id: doc.id,
+                name: doc.name,
+                ...doc.data()
+            }));
+            setChannels(channelsArr);
+        });
+    },[])
 
     return (
         <Container>
@@ -32,46 +46,34 @@ function SideBar({ userObj }) {
                 </UserInfo>
             </Header>
 
-            <Link className="link profile" to="/reference">
-                <SideBarOptions 
-                    Icon={VscReferences} 
-                    title="Thank You List"/>
-            </Link>
-
-            <Link className="link profile" to="/weather">
-            <SideBarOptions 
-                Icon={TiWeatherCloudy} 
-                title="Weather" />
-            </Link>
-
-            <Link className="link profile" to="/todo">
-            <SideBarOptions 
-                Icon={RiTodoLine} 
-                title="To-do" />
-            </Link>
-
-            <Link className="link profile" to="/feeling">
-            <SideBarOptions 
-                Icon={FiThumbsUp} 
-                title="Feeling Good Today" />
-            </Link>
-            
+            <SideBarOptions Icon={VscReferences} title="Thread"/>
+            <SideBarOptions Icon={AiOutlineFolder} title="File / Storage" />
+            <SideBarOptions Icon={VscMention} title="Mention" />
+            <SideBarOptions Icon={VscBrowser} title="Browse" />
+            <SideBarOptions Icon={AiFillFire} title="Appreciate for Coming 😄" />
+            <SideBarOptions Icon={FaHeart} title="My Best for your Dreams 🔥" />
             <hr />
-
-            <SideBarOptions Icon={MdExpandMore} title="My Tags" />
-
-            <hr />
-
-            <SideBarOptions Icon={IoMdAdd} addTagOptions title="Add Tag" />
-
-            <SideBarOptions Icon={BsHash} addTagOptions title="Nomad Coders :P" />
-            <Link className="link profile" to="/">
-            <SideBarOptions Icon={BsHash} addTagOptions title="React 😎" />
+            <SideBarOptions Icon={BsHouseDoorFill} title="My Channels" />
+            <Link className="link" to="/">
+                <SideBarOptions Icon={BsHash} title="행복한 리액트 방" />
             </Link>
-            <SideBarOptions Icon={BsHash} addTagOptions title="Hooks :P" />
-            <SideBarOptions Icon={BsHash} addTagOptions title="Firebase :P" />
-            <SideBarOptions Icon={BsHash} addTagOptions title="Javascript :P" />
+            <Link className="link" to="/challenge">
+                <SideBarOptions Icon={BsHash} title="Challenge" />
+            </Link>
+            <hr />
+            <SideBarOptions Icon={IoMdAdd} addChannelOption title="Add Channels" />
             
+            <ChannelContainer>
+                <div className="channelBox">
+                    {channels?.map(doc => (
+                        <SideBarOptions 
+                            key={doc.id} 
+                                id={doc.id} 
+                                Icon={BsHash} 
+                                title={doc.name} />
+                        ))}
+                </div>
+            </ChannelContainer>
         </SideMenu>
 
     </Container>
@@ -96,6 +98,10 @@ const Container = styled.div`
     font-family: 'IBMPlexSansKR-Regular';
     background-color: #3f0f40;
     border-top: 1px solid #49274b;
+
+    .link {
+    color:honeydew;
+  }
 `;
 
 const SideMenu = styled.div`
@@ -138,4 +144,28 @@ const UserInfoRight = styled.div`
     flex-direction: column;
     margin-left: 15px;
     padding-top: 3px;
+`;
+const ChannelContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 30vh;
+
+    .channelBox {
+        position: flex;
+        width: 100%;
+        overflow: scroll;
+        overflow-x: hidden;
+        }
+    .channelBox::-webkit-scrollbar {
+        width: 8px;
+        }
+    .channelBox::-webkit-scrollbar-track {
+        background: transparent; 
+        }
+    .channelBox::-webkit-scrollbar-thumb {
+        background: gray;
+        }
+    .channelBox::-webkit-scrollbar-thumb:hover {
+        background: #555; 
+        }
 `;

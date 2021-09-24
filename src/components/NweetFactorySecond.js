@@ -13,7 +13,7 @@ import Picker from 'emoji-picker-react';
 
 
 const NweetFactory = ({ userObj }) => {
-    const [nweet, setNweet] = useState("");
+    const [nweetSecond, setNweetSecond] = useState("");
     const [attachment, setAttachment] = useState("");
     const [newModal, setNewModal] = useState(false);
     const fileInput = useRef();
@@ -31,8 +31,8 @@ const NweetFactory = ({ userObj }) => {
         const response = await uploadString(attachmentRef, attachment, "data_url");
         attachmentUrl = await getDownloadURL(response.ref)
         }
-        const nweetObj = {
-            text: nweet,
+        const nweetObjSecond = {
+            text: nweetSecond,
             orderingBy: serverTimestamp(),
             createdAt: createdDate,
             creatorId: userObj.uid,
@@ -40,15 +40,15 @@ const NweetFactory = ({ userObj }) => {
             profileImage: userObj.photoURL,
             attachmentUrl
         }
-
-        await addDoc(collection(dbService, "nweets"), nweetObj);
-        setNweet("");
+        await addDoc(collection(dbService, "nweetsSecond"), nweetObjSecond);
+        
+        setNweetSecond("");
         setAttachment("");
         fileInput.current.value = "";
     };
     const onChange = (event, emojiObject) => {
         const { target : {value} } = event;
-        setNweet(value);
+        setNweetSecond(value);
     };
     const onFileChange = (event) => {
         const {target : {files} } = event;
@@ -69,7 +69,7 @@ const NweetFactory = ({ userObj }) => {
     };
 
     const onEmojiClick = (event, emojiObject) => {
-        setNweet((prev) => prev + emojiObject.emoji);
+        setNweetSecond((prev) => prev + emojiObject.emoji);
     };
 
     return (
@@ -122,7 +122,7 @@ const NweetFactory = ({ userObj }) => {
         <Factory>
             <NweetInput>
                 <input
-                    value= {nweet}
+                    value= {nweetSecond}
                     onChange={onChange} 
                     type="text" 
                     placeholder="Nweet Everyone!" 

@@ -8,15 +8,15 @@ import { RiDeleteBin7Fill, RiChatNewFill } from "react-icons/ri";
 import { GiCancel } from "react-icons/gi";
 
 
-const Nweet = ({ nweetObj, isOwner }) => {
+const Nweet = ({ nweetObjSecond, isOwner }) => {
     const [editing, setEditing] = useState(false);
-    const [newNweet, setNewNweet] = useState(nweetObj.text);
+    const [newNweetSecond, setNewNweetSecond] = useState(nweetObjSecond.text);
 
     const onDeleteClick = async() => {
         const ok = window.confirm("Are you sure that you want to delete this nweet?");
         if(ok) {
-            await deleteDoc(doc(dbService, `nweets/${nweetObj.id}`));
-            await deleteObject( ref(storageService, nweetObj.attachmentUrl) );
+            await deleteDoc(doc(dbService, `nweetsSecond/${nweetObjSecond.id}`));
+            await deleteObject( ref(storageService, nweetObjSecond.attachmentUrl) );
         } 
     }
     const toggleEditing = () => {
@@ -24,13 +24,13 @@ const Nweet = ({ nweetObj, isOwner }) => {
     }
     const onSubmit = async(event) => {
         event.preventDefault();
-        const ref = doc(dbService, `nweets/${nweetObj.id}`);
-        await updateDoc(ref, {text: newNweet});
+        const ref = doc(dbService, `nweetsSecond/${nweetObjSecond.id}`);
+        await updateDoc(ref, {text: newNweetSecond});
         setEditing(false);
     }
     const onChange = (event) => {
         const { target : {value} } = event;
-        setNewNweet(value);
+        setNewNweetSecond(value);
     }
 
     return (  
@@ -47,7 +47,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
                             <input 
                                 type="text" 
                                 placeholder="Edit Your Nweet" 
-                                value={newNweet} 
+                                value={newNweetSecond} 
                                 onChange={onChange}
                                 required 
                             />
@@ -81,8 +81,8 @@ const Nweet = ({ nweetObj, isOwner }) => {
                                 onClick={toggleEditing} />
                         </Buttons>                            
                         <NweetImageTrue>
-                            {nweetObj.attachmentUrl && 
-                            <img src={nweetObj.attachmentUrl}
+                            {nweetObjSecond.attachmentUrl && 
+                            <img src={nweetObjSecond.attachmentUrl}
                             alt="nweetImage"
                             width="50ox" 
                             height="50px" />}
@@ -90,24 +90,24 @@ const Nweet = ({ nweetObj, isOwner }) => {
                         
                         <MiddleSection>
                             <MyNickname>
-                            <h4>@{nweetObj.createdAt}</h4>
+                            <h4>@{nweetObjSecond.createdAt}</h4>
                             <h5>
-                                {nweetObj.nickName === null 
+                                {nweetObjSecond.nickName === null 
                                     ? "John Doe" 
-                                    : nweetObj.nickName}
+                                    : nweetObjSecond.nickName}
                             </h5>
                         </MyNickname>
                         <NweetContent>
-                            <h4>{nweetObj.text}</h4>
+                            <h4>{nweetObjSecond.text}</h4>
                         </NweetContent>
                         
 
                         </MiddleSection>
                                                 
                         <ProfileImage>
-                            <img src={nweetObj.profileImage === null
+                            <img src={nweetObjSecond.profileImage === null
                                       ? "https://nomadcoders.co/m.svg" 
-                                      : nweetObj.profileImage
+                                      : nweetObjSecond.profileImage
                                     } 
                                  alt="profileImage" 
                             />
@@ -121,9 +121,9 @@ const Nweet = ({ nweetObj, isOwner }) => {
                         <NweetUploadFalse>
 
                         <ProfileImage>
-                        <img src={nweetObj.profileImage === null
+                        <img src={nweetObjSecond.profileImage === null
                                       ? "https://nomadcoders.co/m.svg" 
-                                      : nweetObj.profileImage
+                                      : nweetObjSecond.profileImage
                                     } 
                              alt="profileImage" 
                             />
@@ -132,17 +132,17 @@ const Nweet = ({ nweetObj, isOwner }) => {
                         <MiddleSectionFalse>
                         <YourNickName>
                         <h5>
-                            {nweetObj.nickName === null ? "John Doe" : nweetObj.nickName}
+                            {nweetObjSecond.nickName === null ? "John Doe" : nweetObjSecond.nickName}
                         </h5>
-                        <h4>@{nweetObj.createdAt}</h4>
+                        <h4>@{nweetObjSecond.createdAt}</h4>
                         </YourNickName>
                         <NweetContentFalse>
-                            <h5>{nweetObj.text}</h5>
+                            <h5>{nweetObjSecond.text}</h5>
                         </NweetContentFalse>
                         </MiddleSectionFalse>
                         <NweetImageFalse>   
-                        {nweetObj.attachmentUrl && 
-                        <img src={nweetObj.attachmentUrl}
+                        {nweetObjSecond.attachmentUrl && 
+                        <img src={nweetObjSecond.attachmentUrl}
                             alt="nweetImage"
                             width="50ox" 
                             height="50px" />}

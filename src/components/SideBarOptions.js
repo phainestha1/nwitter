@@ -1,24 +1,47 @@
-import React from 'react'
+import React from 'react';
+import { dbService } from "fbase";
+import { collection, addDoc } from "firebase/firestore";
 import styled from "styled-components";
+import {BsHash} from "react-icons/bs";
 
+function SideBarOptions({ Icon, title, addChannelOption, id}) {
 
-function SideBarOptions({ Icon, title, addTagOptions }) {
+    const addChannel = () => {
+        const channelName = prompt("Please name your new channel.");
+
+        if(channelName) {
+            addDoc(collection(dbService, 'rooms'), {
+                name: channelName
+
+            })
+        }
+    }  
+    const selectChannel = () => {
+
+    }
+
     return (
-        <Container>
+        <SidebarOptionContainer
+            onClick = {addChannelOption ? addChannel : selectChannel}
+        >
              {Icon && <Icon fontSize="25" style={ {padding : 10} }/> }
-             {Icon ?
-                    <h3>{title}</h3>
+             {Icon ? <h3>{title}</h3>
                    :
-                    <h3>Not Founded</h3>        
+                    <SidebarOptionChannel>
+                        <BsHash /> {title}
+                    </SidebarOptionChannel>
+                
+                    
             }
-        </Container>
+        </SidebarOptionContainer>
     )
 }
 
 export default SideBarOptions;
 
-const Container = styled.div`
+const SidebarOptionContainer = styled.div`
     display: flex;
+    
     font-size: 13px;
     font-weight: normal;
     align-items: center;
@@ -30,4 +53,7 @@ const Container = styled.div`
         opacity: 0.8;
         background-color: #340e36;
     }
+`;
+const SidebarOptionChannel = styled.div`
+    
 `;

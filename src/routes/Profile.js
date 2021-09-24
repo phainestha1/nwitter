@@ -127,7 +127,7 @@ const Profile = ({ refreshUser, userObj}) => {
                     <input 
                     onChange={onChange}
                     type="text"
-                    placeholder="Display Name"
+                    placeholder="Type Your Name Here"
                     value={newDisplayName}
                 />
                     <button type="submit"> <AiFillEdit size={22}/> </button>
@@ -139,7 +139,9 @@ const Profile = ({ refreshUser, userObj}) => {
 
     <NweetInfoContainer>
         <ContainerTop>
-        <h1> {userObj.displayName}'s Nweet Container</h1>
+        <h1> {userObj.displayName ? userObj.displayName
+                                  : "John Doe"
+        }'s Nweet Container</h1>
         </ContainerTop>
     </NweetInfoContainer>
     </ProfilePage>
@@ -243,6 +245,7 @@ const EditName = styled.div`
     >form>input {
         display: flex;
         position: fixed;
+        width: 1000px;
         left: 440px;
         top: 133px;
         font-size: 30px;
