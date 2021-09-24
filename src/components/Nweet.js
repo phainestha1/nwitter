@@ -7,7 +7,7 @@ import { AiFillEdit } from "react-icons/ai";
 import { RiDeleteBin7Fill } from "react-icons/ri";
 
 
-const Nweet = ({ nweetObj, isOwner, userObj }) => {
+const Nweet = ({ nweetObj, isOwner }) => {
     const [editing, setEditing] = useState(false);
     const [newNweet, setNewNweet] = useState(nweetObj.text);
 
@@ -68,7 +68,9 @@ const Nweet = ({ nweetObj, isOwner, userObj }) => {
                         ? 
                         (<>
                         <MyNickname>
-                        <h5>{nweetObj.nickName}</h5>
+                        <h5>
+                            {nweetObj.nickName === null ? "John Doe" : nweetObj.nickName}
+                        </h5>
                         </MyNickname>
                         <NweetUploadTrue>
                             
@@ -104,7 +106,9 @@ const Nweet = ({ nweetObj, isOwner, userObj }) => {
                     :
                         (<>
                         <YourNickName>
-                        <h5>{nweetObj.nickName}</h5>
+                        <h5>
+                            {nweetObj.nickName === null ? "John Doe" : nweetObj.nickName}
+                        </h5>
                         </YourNickName>
                         <NweetUploadFalse>
 

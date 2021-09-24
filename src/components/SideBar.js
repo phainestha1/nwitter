@@ -8,6 +8,7 @@ import {RiTodoLine} from "react-icons/ri";
 import {FiThumbsUp} from "react-icons/fi";
 import {MdExpandMore} from "react-icons/md";
 import {IoMdAdd} from "react-icons/io";
+import {BsHash} from "react-icons/bs";
 
 
 function SideBar({ userObj }) {
@@ -26,7 +27,7 @@ function SideBar({ userObj }) {
                     </UserInfoLeft>
                     <UserInfoRight>
                     <h4>Nweet Your Day</h4>
-                    <h3>{userObj.displayName}</h3>
+                    <h3>{userObj.displayName === null ? "John Doe" : userObj.displayName}</h3>
                     </UserInfoRight>
                 </UserInfo>
             </Header>
@@ -63,6 +64,14 @@ function SideBar({ userObj }) {
 
             <SideBarOptions Icon={IoMdAdd} addTagOptions title="Add Tag" />
 
+            <SideBarOptions Icon={BsHash} addTagOptions title="Nomad Coders :P" />
+            <Link className="link profile" to="/">
+            <SideBarOptions Icon={BsHash} addTagOptions title="React 😎" />
+            </Link>
+            <SideBarOptions Icon={BsHash} addTagOptions title="Hooks :P" />
+            <SideBarOptions Icon={BsHash} addTagOptions title="Firebase :P" />
+            <SideBarOptions Icon={BsHash} addTagOptions title="Javascript :P" />
+            
         </SideMenu>
 
     </Container>

@@ -3,11 +3,20 @@ import {Link} from "react-router-dom";
 import styled from "styled-components";
 import { VscHome } from "react-icons/vsc";
 import { CgProfile } from "react-icons/cg";
+import { FiLogOut } from "react-icons/fi";
+import { authService } from "fbase";
+import { useHistory } from "react-router-dom";
 
 
 const Navigation = ({ userObj }) => {
   const [clockState, setClockState] = useState();
-
+  const history = useHistory();
+  
+  const onLogOutClick = () => {
+      authService.signOut();
+      history.push("/");
+  }
+  
   useEffect(() => {
       setInterval(() => {
           const date = new Date();
@@ -30,6 +39,7 @@ const Navigation = ({ userObj }) => {
           <Link className="link home" to="/">
             <VscHome size={29} alt="Home"/> 
           </Link>
+          <button onClick={onLogOutClick}> <FiLogOut size={27}/> </button>
       </HeaderLeft>
 
       <HeaderCenter>
@@ -74,6 +84,17 @@ const HeaderLeft = styled.div`
   
   .home {
     margin-left: 10px;
+  }
+  >button{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: honeydew;
+    margin-left: 6px;
+
+    :hover {
+      opacity: 0.8;
+    }
   }
 `;
 
