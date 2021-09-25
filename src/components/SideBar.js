@@ -52,8 +52,8 @@ function SideBar({ userObj }) {
             <SideBarOptions Icon={AiOutlineFolder} title="File / Storage" />
             <SideBarOptions Icon={VscMention} title="Mention" />
             <SideBarOptions Icon={VscBrowser} title="Browse" />
-            <SideBarOptions Icon={AiFillFire} title="Appreciate for Coming 😄" />
-            <SideBarOptions Icon={FaHeart} title="My Best for your Dreams 🔥" />
+            <SideBarOptions Icon={AiFillFire} title="Thx 4 Coming 😄" />
+            <SideBarOptions Icon={FaHeart} title="My Best for Your Dreams 🔥" />
             <hr />
             <SideBarOptions Icon={BsHouseDoorFill} title="My Channels" />
             <Link className="link" to="/">
