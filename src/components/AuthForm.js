@@ -120,19 +120,19 @@ const AuthForm = () => {
         
         <div>
             <button
-                className="altSignInButton"
+                className="altSignInButton google"
                 onClick={onSocialClick} 
                 name="google"> 
             Continue with &nbsp; <FcGoogle />
             </button>
             <button
-                className="altSignInButton" 
+                className="altSignInButton github" 
                 onClick={onSocialClick} 
                 name="github"> 
             Continue with &nbsp; <SiGithub />
             </button>
             <button
-                className="altSignInButton" 
+                className="altSignInButton facebook" 
                 onClick={onSocialClick} 
                 name="facebook"> 
             Continue with &nbsp; <FaFacebook />
@@ -219,6 +219,19 @@ const AuthSection = styled.div`
     .logo {
         width: 55px;
         height: 50px;
+    }
+
+    .google {
+        background-color: #de5246;
+        border:none;
+    }
+    .github {
+        background-color: black;
+        border:none;
+    }
+    .facebook {
+        background-color: #4267B2;
+        border:none;
     }
 
 `;

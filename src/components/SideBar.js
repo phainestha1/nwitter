@@ -12,6 +12,8 @@ import {BsHouseDoorFill} from "react-icons/bs";
 import {IoMdAdd} from "react-icons/io";
 import {FaHeart} from "react-icons/fa";
 import {BsHash} from "react-icons/bs";
+import {RiChat1Line} from "react-icons/ri";
+
 
 function SideBar({ userObj }) {
     const [channels, setChannels] = useState([]);
@@ -55,13 +57,13 @@ function SideBar({ userObj }) {
             <hr />
             <SideBarOptions Icon={BsHouseDoorFill} title="My Channels" />
             <Link className="link" to="/">
-                <SideBarOptions Icon={BsHash} title="행복한 리액트 방" />
+                <SideBarOptions Icon={RiChat1Line} title="행복한 리액트 방" />
             </Link>
             <Link className="link" to="/challenge">
-                <SideBarOptions Icon={BsHash} title="Challenge" />
+                <SideBarOptions Icon={RiChat1Line} title="Challenge" />
             </Link>
             <hr />
-            <SideBarOptions Icon={IoMdAdd} addChannelOption title="Add Channels" />
+            <SideBarOptions Icon={IoMdAdd} addChannelOption title="Add Tags" />
             
             <ChannelContainer>
                 <div className="channelBox">
